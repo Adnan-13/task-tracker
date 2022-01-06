@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-export const Button = ({ color, onClick }) => {
+export const Button = ({ text, color, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -10,7 +10,7 @@ export const Button = ({ color, onClick }) => {
         backgroundColor: color,
       }}
     >
-      Add
+      {text}
     </button>
   );
 };
