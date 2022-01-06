@@ -55,14 +55,22 @@ body {
 }
 
 .task {
+  display: flex;
+  flex-direction: column;
   background: #dfdfdf;
-  margin: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
+  margin: 4px;
+  padding: 10px 12px;
 }
 
 .task.reminder {
   border-left: 5px solid green;
+}
+
+.task.button-holder {
+  flex-direction: row;
+  width: 17%;
+  justify-content: space-between;
+
 }
 
 .task h3 {

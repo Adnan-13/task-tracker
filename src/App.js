@@ -23,7 +23,7 @@ function App() {
       id: 3,
       text: 'Talk to parvez',
       date: 'Jan 6th at 11:30PM',
-      reminder: true,
+      reminder: false,
     },
     {
       id: 4,
@@ -44,6 +44,20 @@ function App() {
     const newTask = { id: taskId, ...task };
     setTaskId(taskId + 1);
     setTasks([...tasks, newTask]);
+  };
+
+  //edit task
+  const editTask = (editedTask) => {
+    // console.log(editedTask);
+    var modifiedTasks = [];
+    tasks.forEach((i) => {
+      console.log(i.id, editTask.id);
+      if (editTask.id === i.id) {
+        console.log('Got that S****');
+      }
+    });
+
+    // console.log(modifiedTasks);
   };
 
   // delete task
@@ -73,6 +87,7 @@ function App() {
           <Tasks
             tasks={tasks}
             onDelete={deleteTask}
+            onEdit={editTask}
             onReminderToggle={setReminder}
           />
         ) : (

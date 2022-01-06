@@ -1,6 +1,6 @@
 import Task from './Task.js';
 
-const Tasks = ({ tasks, onDelete, onReminderToggle }) => {
+const Tasks = ({ tasks, onDelete, onReminderToggle, onEdit }) => {
   return (
     <>
       {tasks.map((task) => (
@@ -8,6 +8,7 @@ const Tasks = ({ tasks, onDelete, onReminderToggle }) => {
           key={task.id}
           task={task}
           onDelete={onDelete}
+          onEdit={onEdit}
           onReminderToggle={onReminderToggle}
         />
       ))}
