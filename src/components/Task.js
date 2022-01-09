@@ -5,6 +5,8 @@ import EditTask from './EditTask.js';
 
 const Task = ({ task, onDelete, onReminderToggle, onEdit }) => {
   const [showEditTask, setShowEditTask] = useState(false);
+  let formatedDate = task.date.split('T');
+  formatedDate = formatedDate[0] + ' at ' + formatedDate[1];
   return (
     <>
       <div
@@ -24,9 +26,13 @@ const Task = ({ task, onDelete, onReminderToggle, onEdit }) => {
             />
           </div>
         </h3>
-        <p> {task.date} </p>
+        <p> {formatedDate} </p>
       </div>
-      {showEditTask ? <EditTask task={task} onEdit={onEdit} /> : ''}
+      {showEditTask ? (
+        <EditTask task={task} onEdit={onEdit} editTaskField={setShowEditTask} />
+      ) : (
+        ''
+      )}
     </>
   );
 };

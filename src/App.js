@@ -10,31 +10,31 @@ function App() {
     {
       id: 1,
       text: 'Go to office',
-      date: 'Jan 6th at 9:30AM',
+      date: '2022-01-11T14:26',
       reminder: true,
     },
     {
       id: 2,
       text: 'Go to Mymensingh',
-      date: 'Jan 6th at 6:30PM',
+      date: '2022-01-11T14:26',
       reminder: false,
     },
     {
       id: 3,
       text: 'Talk to parvez',
-      date: 'Jan 6th at 11:30PM',
+      date: '2022-01-11T14:26',
       reminder: false,
     },
     {
       id: 4,
       text: 'Sleep well',
-      date: 'Jan 7th at 12:30AM',
+      date: '2022-01-11T14:26',
       reminder: false,
     },
     {
       id: 5,
       text: 'Wake up',
-      date: 'Jan 7th at 8:00AM',
+      date: '2022-01-11T14:26',
       reminder: true,
     },
   ]);
@@ -51,13 +51,12 @@ function App() {
     // console.log(editedTask);
     var modifiedTasks = [];
     tasks.forEach((i) => {
-      console.log(i.id, editTask.id);
-      if (editTask.id === i.id) {
-        console.log('Got that S****');
-      }
+      editedTask.id === i.id
+        ? modifiedTasks.push(editedTask)
+        : modifiedTasks.push(i);
     });
 
-    // console.log(modifiedTasks);
+    setTasks(modifiedTasks);
   };
 
   // delete task
@@ -77,19 +76,24 @@ function App() {
   const onAddToggle = () => {
     setShowAddTask(!showAddTask);
   };
-
   return (
     <div>
       <div className='container'>
         <Header onAddToggle={onAddToggle} showAddTask={showAddTask} />
         {showAddTask ? <AddTask onAdd={addTask} /> : ''}
         {tasks.length > 0 ? (
-          <Tasks
-            tasks={tasks}
-            onDelete={deleteTask}
-            onEdit={editTask}
-            onReminderToggle={setReminder}
-          />
+          <>
+            <p style={{ fontSize: 14 }}>
+              The left green border indicates if reminder is set or not. Double
+              click a task to set/remove reminder
+            </p>
+            <Tasks
+              tasks={tasks}
+              onDelete={deleteTask}
+              onEdit={editTask}
+              onReminderToggle={setReminder}
+            />
+          </>
         ) : (
           'No tasks to show'
         )}

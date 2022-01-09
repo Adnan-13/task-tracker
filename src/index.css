@@ -60,6 +60,7 @@ body {
   background: #dfdfdf;
   margin: 4px;
   padding: 10px 12px;
+  border-radius: 6px;
 }
 
 .task.reminder {

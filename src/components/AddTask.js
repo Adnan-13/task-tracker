@@ -13,6 +13,8 @@ const AddTask = ({ onAdd }) => {
       return;
     }
 
+    // let formatedDate = date.split('T');
+    // formatedDate = formatedDate[0] + ' at ' + formatedDate[1];
     onAdd({ text, date, reminder });
 
     setText('');
@@ -35,7 +37,7 @@ const AddTask = ({ onAdd }) => {
       <div className='form-control'>
         <label>Date and Time</label>
         <input
-          type='text'
+          type='datetime-local'
           placeholder='Add Date and time'
           value={date}
           onChange={(e) => setDate(e.target.value)}
