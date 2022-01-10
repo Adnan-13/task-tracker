@@ -1,17 +1,16 @@
 {
   "tasks": [
-    
     {
       "id": 1,
       "text": "Go to office",
-      "date": "2022-01-11T14:26",
+      "date": "2021-12-26T14:26",
       "reminder": true
     },
     {
       "id": 2,
       "text": "Go to Mymensingh",
       "date": "2022-01-11T14:26",
-      "reminder": false
+      "reminder": true
     },
     {
       "id": 3,
@@ -31,6 +30,5 @@
       "date": "2022-01-11T14:26",
       "reminder": true
     }
-  
   ]
 }
