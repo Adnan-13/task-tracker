@@ -3,55 +3,105 @@ import Tasks from './components/Tasks.js';
 import { useEffect, useState } from 'react';
 import AddTask from './components/AddTask.js';
 
+const BASE_URL = 'http://localhost:5000';
+
 function App() {
   const [showAddTask, setShowAddTask] = useState(false);
-  const [taskId, setTaskId] = useState(6);
   const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    const fetchTasks = async () => {
-      const res = await fetch('http://localhost:5000/tasks');
-      res.json().then((resTasks) => {
-        console.log(resTasks);
-        setTasks(resTasks);
-      });
-    };
-
-    fetchTasks();
+    getTasks();
   }, []);
 
+  const getTasks = async () => {
+    const data = await fetchTasks();
+    setTasks(data);
+  };
+
+  //get all tasks from server
+  const fetchTasks = async () => {
+    const res = await fetch(`${BASE_URL}/tasks`);
+
+    return await res.json();
+  };
+
+  //get a task with specified id
+  const fetchTask = async (id) => {
+    const res = await fetch(`${BASE_URL}/tasks/${id}`);
+
+    return await res.json();
+  };
+
   //add task
-  const addTask = (task) => {
-    const newTask = { id: taskId, ...task };
-    setTaskId(taskId + 1);
-    setTasks([...tasks, newTask]);
+  const addTask = async (task) => {
+    // const newTask = { id: taskId, ...task };
+    // setTaskId(taskId + 1);
+    // setTasks([...tasks, newTask]);
+    const currentDateTime = new Date().toISOString().slice(0, 16);
+
+    if (!task.date) task.date = currentDateTime;
+
+    const res = await fetch(`${BASE_URL}/tasks`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(task),
+    });
+
+    const data = await res.json();
+
+    setTasks([...tasks, data]);
   };
 
   //edit task
-  const editTask = (editedTask) => {
-    // console.log(editedTask);
-    var modifiedTasks = [];
-    tasks.forEach((i) => {
-      editedTask.id === i.id
-        ? modifiedTasks.push(editedTask)
-        : modifiedTasks.push(i);
-    });
+  const editTask = async (editedTask) => {
+    const currentDateTime = new Date().toISOString().slice(0, 16);
+    if (!editedTask.date) editedTask.date = currentDateTime;
 
-    setTasks(modifiedTasks);
+    await fetch(`${BASE_URL}/tasks/${editedTask.id}`, {
+      method: 'PUT',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(editedTask),
+    });
+    setTasks(await fetchTasks());
+  };
+
+  //edit task field value
+  const editTaskField = async (id, field, value) => {
+    const taskToEdit = await fetchTask(id);
+
+    taskToEdit[field] = value;
+
+    await fetch(`${BASE_URL}/tasks/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-type': 'application/json' },
+      body: JSON.stringify(taskToEdit),
+    });
+    setTasks(await fetchTasks());
   };
 
   // delete task
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    await fetch(`${BASE_URL}/tasks/${id}`, {
+      method: 'DELETE',
+    });
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
   //reminder toggle
-  const setReminder = (id) => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, reminder: !task.reminder } : task
-      )
-    );
+  const setReminder = async (id) => {
+    const currentTask = await fetchTask(id);
+
+    await editTaskField(id, 'reminder', !currentTask.reminder);
+
+    setTasks(await fetchTasks());
+
+    // setTasks(
+    //   tasks.map((task) =>
+    //     task.id === id ? { ...task, reminder: !task.reminder } : task
+    //   )
+    // );
   };
 
   const onAddToggle = () => {

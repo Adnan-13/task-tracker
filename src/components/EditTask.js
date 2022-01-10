@@ -4,6 +4,7 @@ const EditTask = ({ task, onEdit, editTaskField }) => {
   const [text, setText] = useState(task.text);
   const [date, setDate] = useState(task.date);
   const [reminder, setReminder] = useState(task.reminder);
+  const [emptyTaskAlert, setEmptyTaskAlert] = useState(false);
 
   const theID = task.id;
 
@@ -11,7 +12,7 @@ const EditTask = ({ task, onEdit, editTaskField }) => {
     e.preventDefault();
 
     if (!text) {
-      alert('Please add a task');
+      setEmptyTaskAlert(true);
       return;
     }
 
@@ -26,7 +27,14 @@ const EditTask = ({ task, onEdit, editTaskField }) => {
     <div style={{ border: '1px solid steelblue' }}>
       <form className='add-form' style={{ margin: '15px' }} onSubmit={onSubmit}>
         <div className='form-control'>
-          <label>Task</label>
+          <label>
+            Task<span>*</span>
+          </label>
+          {emptyTaskAlert && (
+            <p style={{ fontSize: 13, color: 'red' }}>
+              Task field should not be empty
+            </p>
+          )}
           <input
             type='text'
             value={text}
