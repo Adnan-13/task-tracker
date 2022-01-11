@@ -38,7 +38,7 @@ const Task = ({ task, onDelete, onReminderToggle, onEdit }) => {
         />
       )}
       {showEditTask && (
-        <EditTask task={task} onEdit={onEdit} editTaskField={setShowEditTask} />
+        <EditTask task={task} onEdit={onEdit} addEditBox={setShowEditTask} />
       )}
     </>
   );

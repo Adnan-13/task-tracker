@@ -1,7 +1,7 @@
 import Header from './components/Header.js';
 import Tasks from './components/Tasks.js';
 import { useEffect, useState } from 'react';
-import AddTask from './components/AddTask.js';
+import EditTask from './components/EditTask.js';
 
 const BASE_URL = 'http://localhost:5000';
 
@@ -32,12 +32,29 @@ function App() {
     return await res.json();
   };
 
+  const getCurrentBdTime = () => {
+    const d = new Date();
+    const tzDiff = 12 * 60 + d.getTimezoneOffset();
+
+    const currentDateTime = new Date(d.getTime() + tzDiff * 60 * 1000)
+      .toISOString()
+      .slice(0, 16);
+
+    return currentDateTime;
+  };
+
   //add task
   const addTask = async (task) => {
     // const newTask = { id: taskId, ...task };
     // setTaskId(taskId + 1);
     // setTasks([...tasks, newTask]);
-    const currentDateTime = new Date().toISOString().slice(0, 16);
+    task = {
+      text: task.text,
+      date: task.date,
+      reminder: task.reminder,
+    };
+
+    const currentDateTime = getCurrentBdTime();
 
     if (!task.date) task.date = currentDateTime;
 
@@ -111,7 +128,15 @@ function App() {
     <div>
       <div className='container'>
         <Header onAddToggle={onAddToggle} showAddTask={showAddTask} />
-        {showAddTask ? <AddTask onAdd={addTask} /> : ''}
+        {showAddTask ? (
+          <EditTask
+            onEdit={addTask}
+            componentType={1}
+            addEditBox={setShowAddTask}
+          />
+        ) : (
+          ''
+        )}
         {tasks.length > 0 ? (
           <>
             <p style={{ fontSize: 14 }}>
